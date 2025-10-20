@@ -96,4 +96,8 @@ public class MetodosCampeonato {
     }
 
     // OBS: Implementar aqui os métodos CRUD para Atleta, Arbitro, Equipe, Competição, etc.
+
+    public void inserirPessoa(){
+        System.out.println("teste");
+    }
 }
