@@ -18,6 +18,7 @@ public class Equipe {
         this.Cede_Quadra = cede_Quadra;
         this.Cede_Cidade = cede_Cidade;
     }
+
     public String mostrarEquipe() {
         return "Equipe ID_Equipe=" + ID_Equipe +
                 ", Atleta=" + Atleta +
