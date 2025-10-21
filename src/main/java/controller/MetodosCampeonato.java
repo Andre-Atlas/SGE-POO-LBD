@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import Model.Equipe;
 
+import static Model.BancodeDados.connection;
+
 public class MetodosCampeonato {
 
     private Connection connection;
@@ -112,9 +114,9 @@ public void inserirEquipe(Equipe equipe) {
         pstmt.setInt(2, equipe.getTecnico());
         pstmt.setInt(3, equipe.getEquipe_Tecnica());
         pstmt.setInt(4, equipe.getModalidade());
-        pstmt.setInt(5, equipe.getCede_Numero());
-        pstmt.setInt(6, equipe.getCede_Quadra());
-        pstmt.setInt(7, equipe.getCede_Cidade());
+        pstmt.setInt(5, equipe.getSede_Numero());
+        pstmt.setInt(6, equipe.getSede_Quadra());
+        pstmt.setInt(7, equipe.getSede_Cidade());
         pstmt.executeUpdate();
         try (ResultSet rs = pstmt.getGeneratedKeys()) {
             if (rs.next()) {
@@ -183,9 +185,9 @@ public void atualizarEquipe(Equipe equipe) {
         pstmt.setInt(2, equipe.getTecnico());
         pstmt.setInt(3, equipe.getEquipe_Tecnica());
         pstmt.setInt(4, equipe.getModalidade());
-        pstmt.setInt(5, equipe.getCede_Numero());
-        pstmt.setInt(6, equipe.getCede_Quadra());
-        pstmt.setInt(7, equipe.getCede_Cidade());
+        pstmt.setInt(5, equipe.getSede_Numero());
+        pstmt.setInt(6, equipe.getSede_Quadra());
+        pstmt.setInt(7, equipe.getSede_Cidade());
         pstmt.setInt(8, equipe.getID_Equipe());
         int affectedRows = pstmt.executeUpdate();
         if (affectedRows > 0) {
