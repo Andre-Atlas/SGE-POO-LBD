@@ -165,7 +165,7 @@ public class MetodosCampeonato {
             if (affectedRows > 0) {
                 System.out.println("Modalidade atualizada com sucesso");
             }else {
-                System.out.println("Nenhuma pessoa encontrada com ID fornecido");
+                System.out.println("Nenhuma modalidade encontrada com ID fornecido");
             }
             
         } catch (SQLException e) {
@@ -203,7 +203,7 @@ public class MetodosCampeonato {
                     rs.getFloat("Valor"),
                     rs.getInt("Competicao")
                     );
-                    
+                    pre.setID_Premiacao(rs.getInt("ID_Premiação"));
                     premiacoes.add(pre);
                 }
             } catch (SQLException e) {
@@ -214,7 +214,7 @@ public class MetodosCampeonato {
     }
     
     public void deletarPremiacao(int id){
-        String sql = "DELETE FROM Premiação WHERE ID_Competição = ?";
+        String sql = "DELETE FROM Premiação WHERE ID_Premiação = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, id);
             int affectedRows = pstmt.executeUpdate();
@@ -224,12 +224,27 @@ public class MetodosCampeonato {
                 System.out.println("Nenhuma premiação encontrada com o ID fornecido");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao deletar modalidade: " + e.getMessage());
+            System.out.println("Erro ao deletar premiação: " + e.getMessage());
         }
     }
     
-    public void atualizarPremiacao(){
+    public void atualizarPremiacao(Premiacao premiacao){
         String sql = "UPDATE Premiação SET Tipo = ?, Colocação = ?, Valor = ?, Competição = ? WHERE ID_Competição = ?";
+         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, premiacao.getTipo());
+            pstmt.setInt(2, premiacao.getColocação());
+            pstmt.setFloat(3, premiacao.getValor());
+            pstmt.setInt(4, premiacao.getCompetição());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Premiação atualizada com sucesso");
+            }else {
+                System.out.println("Nenhuma premiação encontrada com ID fornecido");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar premiação " + e.getMessage());
+        }
     }
 }
 

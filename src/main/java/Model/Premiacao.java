@@ -1,6 +1,7 @@
 package Model;
 
 public class Premiacao {
+    private int ID_Premiacao;
     private int Tipo;
     private int Colocação;
     private float Valor;
@@ -23,6 +24,9 @@ public class Premiacao {
     }
 
     //Getters
+    public int getID_Premiacao() {
+        return ID_Premiacao;
+    }
     public int getTipo() {
         return Tipo;
     }
@@ -35,6 +39,7 @@ public class Premiacao {
     public int getCompetição() {
         return Competição;
     }
+    
 
     //Setters
     public void setTipo(int tipo) {
@@ -48,6 +53,9 @@ public class Premiacao {
     }
     public void setCompetição(int competição) {
         Competição = competição;
+    }
+    public void setID_Premiacao(int iD_Premiacao) {
+        ID_Premiacao = iD_Premiacao;
     }
 
     
