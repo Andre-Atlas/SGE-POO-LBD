@@ -6,17 +6,18 @@ public class Equipe {
     private int Tecnico;
     private int Equipe_Tecnica;
     private int Modalidade;
-    private int Cede_Numero;
-    private int Cede_Quadra;
-    private int Cede_Cidade;
-    public Equipe(int atleta, int tecnico, int equipe Tecnica, int modalidade, int cede_Numero, int cede_Quadra, int cede_Cidade) {
+    private int Sede_Numero;
+    private int Sede_Quadra;
+    private int Sede_Cidade;
+
+    public Equipe(int atleta, int tecnico, int equipe_Tecnica, int modalidade, int Sede_Numero, int Sede_Quadra, int Sede_Cidade) {
         this.Atleta = atleta;
         this.Tecnico = tecnico;
         this.Equipe_Tecnica = equipe_Tecnica;
         this.Modalidade = modalidade;
-        this.Cede_Numero = cede_Numero;
-        this.Cede_Quadra = cede_Quadra;
-        this.Cede_Cidade = cede_Cidade;
+        this.Sede_Numero = Sede_Numero;
+        this.Sede_Quadra = Sede_Quadra;
+        this.Sede_Cidade = Sede_Cidade;
     }
 
     public String mostrarEquipe() {
@@ -25,9 +26,9 @@ public class Equipe {
                 ", Tecnico=" + Tecnico +
                 ", Equipe_Tecnica=" + Equipe_Tecnica +
                 ", Modalidade=" + Modalidade +
-                ", Cede_Numero=" + Cede_Numero +
-                ", Cede_Quadra=" + Cede_Quadra +
-                ", Cede_Cidade=" + Cede_Cidade + "]";
+                ", Sede_Numero=" + Sede_Numero +
+                ", Sede_Quadra=" + Sede_Quadra +
+                ", Sede_Cidade=" + Sede_Cidade + "]";
     }
     public int getID_Equipe() {
         return ID_Equipe;
@@ -59,22 +60,22 @@ public class Equipe {
     public void setModalidade(int modalidade) {
         Modalidade = modalidade;
     }
-    public int getCede_Numero() {
-        return Cede_Numero;
+    public int getSede_Numero() {
+        return Sede_Numero;
     }
-    public void setCede_Numero(int cede_Numero) {
-        Cede_Numero = cede_Numero;
+    public void setSede_Numero(int Sede_Numero) {
+        Sede_Numero = Sede_Numero;
     }
-    public int getCede_Quadra() {
-        return Cede_Quadra;
+    public int getSede_Quadra() {
+        return Sede_Quadra;
     }
-    public void setCede_Quadra(int cede_Quadra) {
-        Cede_Quadra = cede_Quadra;
+    public void setSede_Quadra(int Sede_Quadra) {
+        Sede_Quadra = Sede_Quadra;
     }
-    public int getCede_Cidade() {
-        return Cede_Cidade;
+    public int getSede_Cidade() {
+        return Sede_Cidade;
     }
-    public void setCede_Cidade(int cede_Cidade) {
-        Cede_Cidade = cede_Cidade;
+    public void setSede_Cidade(int Sede_Cidade) {
+        Sede_Cidade = Sede_Cidade;
     }
 }
