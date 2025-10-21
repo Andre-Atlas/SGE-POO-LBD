@@ -4,7 +4,7 @@ public class Modalidade {
     private int ID_Modalidade;
     private String Nome;
     private String Tipo;
-    private String Regras_Basicas;
+    private int Regras_Basicas;
 
     public String mostrarModalidade() {
         return "Modalidade [ID_Modalidade=" + ID_Modalidade + 
@@ -14,7 +14,7 @@ public class Modalidade {
     }
 
     // construtor
-    public Modalidade(String nome, String tipo, String regras){
+    public Modalidade(String nome, String tipo, int regras){
         this.Nome = nome;
         this.Tipo = tipo;
         this.Regras_Basicas = regras;
@@ -34,7 +34,7 @@ public class Modalidade {
         return Tipo;
     }
 
-    public String getRegras_Basicas() {
+    public int getRegras_Basicas() {
         return Regras_Basicas;
     }
 
@@ -52,7 +52,7 @@ public class Modalidade {
         Tipo = tipo;
     }
     
-    public void setRegras_Basicas(String regras_Basicas) {
+    public void setRegras_Basicas(int regras_Basicas) {
         Regras_Basicas = regras_Basicas;
     }
 }

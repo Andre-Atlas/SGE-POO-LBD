@@ -107,7 +107,7 @@ public class MetodosCampeonato {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setString(1, modalidade.getNome());
             pstmt.setString(2, modalidade.getTipo());
-            pstmt.setString(3, modalidade.getRegras_Basicas()); 
+            pstmt.setInt(3, modalidade.getRegras_Basicas()); 
             pstmt.executeUpdate();
             System.out.println("Modalidade " + modalidade.getNome() + " inserida com sucesso");
             
@@ -126,7 +126,7 @@ public class MetodosCampeonato {
                 Modalidade m = new Modalidade(
                     rs.getString("Nome"),
                     rs.getString("Tipo"),
-                    rs.getString("Regras_Basicas")
+                    rs.getInt("Regras_Basicas")
                     );
                     
                     m.setID_Modalidade(rs.getInt("ID_Modalidade"));
@@ -159,7 +159,7 @@ public class MetodosCampeonato {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setString(1, modalidade.getNome());
             pstmt.setString(2, modalidade.getTipo());
-            pstmt.setString(3, modalidade.getRegras_Basicas());
+            pstmt.setInt(3, modalidade.getRegras_Basicas());
             pstmt.setInt(4, modalidade.getID_Modalidade());
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -201,7 +201,7 @@ public class MetodosCampeonato {
                     rs.getInt("Tipo"),
                     rs.getInt("Colocação"),
                     rs.getFloat("Valor"),
-                    rs.getInt("Competicao")
+                    rs.getInt("Competição")
                     );
                     pre.setID_Premiacao(rs.getInt("ID_Premiação"));
                     premiacoes.add(pre);

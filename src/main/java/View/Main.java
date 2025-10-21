@@ -160,9 +160,9 @@ public class Main {
                 System.out.print("Tipo: ");
                 String tipo = scanner.nextLine();
                 System.out.print("Regras Básicas: ");
-                String Regras_Basicas = scanner.nextLine();
+                int ID_Regras_Basicas = Integer.parseInt(scanner.nextLine());
 
-                Modalidade novaModalidade = new Modalidade(nome, tipo, Regras_Basicas);
+                Modalidade novaModalidade = new Modalidade(nome, tipo, ID_Regras_Basicas);
                 controller.inserirModalidade(novaModalidade);
             } catch (Exception e) {
                 System.err.println("Erro nos dados de entrada: " + e.getMessage());
@@ -191,7 +191,7 @@ public class Main {
             System.out.print("Novo Tipo: ");
             String tipo = scanner.nextLine();
             System.out.print("Novas Regrase: ");
-            String Regras_Basicas = scanner.nextLine();
+            int Regras_Basicas = Integer.parseInt(scanner.nextLine());
 
             Modalidade ModalidadeAtualizada = new Modalidade(nome, tipo, Regras_Basicas);
             ModalidadeAtualizada.setID_Modalidade(id);
