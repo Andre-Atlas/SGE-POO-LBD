@@ -178,7 +178,6 @@ public Equipe buscarEquipePorId(int id) {
 public void atualizarEquipe(Equipe equipe) {
     String sql = "UPDATE Equipe SET Atleta = ?, Tecnico = ?, Equipe_Tecnica = ?, Modalidade = ?, " +
             "Cede_Numero = ?, Cede_Quadra = ?, Cede_Cidade = ? WHERE ID_Equipe = ?";
-
     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
         pstmt.setInt(1, equipe.getAtleta());
         pstmt.setInt(2, equipe.getTecnico());
