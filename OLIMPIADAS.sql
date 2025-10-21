@@ -137,6 +137,9 @@ CREATE TABLE Premiação(
 			ON DELETE RESTRICT
 );
 
+ALTER TABLE Premiação
+ADD COLUMN ID_Premiação INT AUTO_INCREMENT PRIMARY KEY;
+
 /*
 ====================================
 RELACIONAMENTOS
