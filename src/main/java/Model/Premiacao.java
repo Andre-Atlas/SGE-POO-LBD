@@ -7,8 +7,8 @@ public class Premiacao {
     private float Valor;
     private int Competição;
 
-
-    public String mostrarPremiacao() {
+    @Override
+    public String toString() {
         return "Premiacao [Tipo=" + Tipo + 
                 ", Colocação=" + Colocação + 
                 ", Valor=" + Valor + 

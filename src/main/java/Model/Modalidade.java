@@ -6,7 +6,8 @@ public class Modalidade {
     private String Tipo;
     private int Regras_Basicas;
 
-    public String mostrarModalidade() {
+    @Override
+    public String toString() {
         return "Modalidade [ID_Modalidade=" + ID_Modalidade + 
                 ", Nome=" + Nome + 
                 ", Tipo=" + Tipo + 

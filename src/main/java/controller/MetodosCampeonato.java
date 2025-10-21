@@ -229,12 +229,13 @@ public class MetodosCampeonato {
     }
     
     public void atualizarPremiacao(Premiacao premiacao){
-        String sql = "UPDATE Premiação SET Tipo = ?, Colocação = ?, Valor = ?, Competição = ? WHERE ID_Competição = ?";
+        String sql = "UPDATE Premiação SET Tipo = ?, Colocação = ?, Valor = ?, Competição = ? WHERE Competição = ?";
          try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, premiacao.getTipo());
             pstmt.setInt(2, premiacao.getColocação());
             pstmt.setFloat(3, premiacao.getValor());
             pstmt.setInt(4, premiacao.getCompetição());
+            pstmt.setInt(5, premiacao.getID_Premiacao());
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("Premiação atualizada com sucesso");
