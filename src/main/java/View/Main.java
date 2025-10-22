@@ -16,20 +16,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int opcao = -1;
 
+        // menu
+
         while (opcao != 0) {
             System.out.println("\n--- Sistema de Gerenciamento Esportivo ---");
-            System.out.println("1. Adicionar Pessoa");
-            System.out.println("2. Listar Pessoas");
-            System.out.println("3. Atualizar Pessoa");
-            System.out.println("4. Deletar Pessoa");
-            System.out.println("5. Adicionar Modalidade");
-            System.out.println("6. Listar Modalidade");
-            System.out.println("7. Atualizar Modalidade");
-            System.out.println("8. Deletar Modalidade");
-            System.out.println("9. Adicionar Premiação");
-            System.out.println("10. Listar Premiação");
-            System.out.println("11. Atualizar Premiação");
-            System.out.println("12. Deletar Premiação");
+            System.out.println("1. Pessoa");
+            System.out.println("2. Modalidade");
+            System.out.println("3. Premiação");
+            System.out.println("4. Regras");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -40,54 +34,163 @@ public class Main {
                 continue;
             }
 
+            int op = -1;
             switch (opcao) {
                 case 1:
-                    adicionarPessoa(scanner, controller);
+                    while (op != 0){
+                        System.out.println("--------- Gerenciamento de Pessoa ----------");
+                        System.out.println("1. Adicionar Pessoa");
+                        System.out.println("2. Listar Pessoas");
+                        System.out.println("3. Atualizar Pessoa");
+                        System.out.println("4. Deletar Pessoa");
+                        System.out.println("0. Voltar ao menu principal");
+                        System.out.print("Escolha uma opção: ");
+
+                        try {
+                            op = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Opção inválida. Por favor, insira um número.");
+                            continue;
+                        }
+
+                        switch (op) {
+                            case 0:
+                                System.out.println("Saindo...");
+                                break;
+                            case 1:
+                                adicionarPessoa(scanner, controller);
+                                break;
+                            case 2:
+                                listarPessoas(controller);
+                                break;
+                            case 3:
+                                atualizarPessoa(scanner, controller);
+                                break;
+                            case 4:
+                                deletarPessoa(scanner, controller);
+                                break;
+                            default:
+                                System.out.println("Opção Inválida!");
+                                break;
+                            }
+                    }
                     break;
                 case 2:
-                    listarPessoas(controller);
+                    while (op != 0){
+                        System.out.println("--------- Gerenciamento de Modalidade ----------");
+                        System.out.println("1. Adicionar Modalidade");
+                        System.out.println("2. Listar Modalidades");
+                        System.out.println("3. Atualizar Modalidade");
+                        System.out.println("4. Deletar Modalidade");
+                        System.out.println("0. Voltar ao menu principal");
+                        System.out.print("Escolha uma opção: ");
+
+                        try {
+                            op = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Opção inválida. Por favor, insira um número.");
+                            continue;
+                        }
+
+                        switch (op) {
+                            case 0:
+                                System.out.println("Saindo...");
+                                break;
+                            case 1:
+                                adicionarModalidade(scanner, controller);
+                                break;
+                            case 2:
+                                listarModalidade(controller);
+                                break;
+                            case 3:
+                                atualizarModalidade(scanner, controller);
+                                break;
+                            case 4:
+                                deletarModalidade(scanner, controller);
+                                break;
+                            default:
+                                System.out.println("Opção Inválida!");
+                                break;
+                        }
+                    }
                     break;
                 case 3:
-                    atualizarPessoa(scanner, controller);
+                    while (op != 0){
+                        System.out.println("--------- Gerenciamento de Premiação ----------");
+                        System.out.println("1. Adicionar Premiação");
+                        System.out.println("2. Listar Premiações");
+                        System.out.println("3. Atualizar Premiação");
+                        System.out.println("4. Deletar Premiação");
+                        System.out.println("0. Voltar ao menu principal");
+                        System.out.print("Escolha uma opção: ");
+
+                        try {
+                            op = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Opção inválida. Por favor, insira um número.");
+                            continue;
+                        }
+
+                        switch (op) {
+                            case 0:
+                                System.out.println("Saindo...");
+                                break;
+                            case 1:
+                                adicionarPremiacao(scanner, controller);
+                                break;
+                            case 2:
+                                listarPremiacao(controller);
+                                break;
+                            case 3:
+                                atualizarPremiacao(scanner, controller);
+                                break;
+                            case 4:
+                                deletarPremiacao(scanner, controller);
+                                break;
+                            default:
+                                System.out.println("Opção Inválida!");
+                                break;
+                        }
+                    }
                     break;
                 case 4:
-                    deletarPessoa(scanner, controller);
-                    break;
-                case 5:
-                    adicionarModalidade(scanner,controller);
-                    break;
-                case 6:
-                    listarModalidade(controller);
-                    break;
-                case 7:
-                    atualizarModalidade(scanner, controller);
-                    break;
-                case 8:
-                    deletarModalidade(scanner, controller);
-                    break;
-                case 9:
-                    adicionarPremiacao(scanner, controller);
-                    break;
-                case 10:
-                    listarPremiacao(controller);
-                    break;
-                case 11:
-                    atualizarPremiacao(scanner, controller);
-                    break;
-                case 12:
-                    deletarPremiacao(scanner, controller);
-                    break;
-                case 13:
-                    adicionarRegra(scanner, controller);
-                    break;
-                case 14:
-                    listarRegra(controller);
-                    break;
-                case 15:
-                    atualizarRegra(scanner, controller);
-                    break;
-                case 16:
-                    deletarRegra(scanner, controller);
+                    while (op != 0){
+                        System.out.println("--------- Gerenciamento de Regras ----------");
+                        System.out.println("1. Adicionar Regra");
+                        System.out.println("2. Listar Regras");
+                        System.out.println("3. Atualizar Regra");
+                        System.out.println("4. Deletar Regra");
+                        System.out.println("0. Voltar ao menu principal");
+                        System.out.print("Escolha uma opção: ");
+
+                        try {
+                            op = Integer.parseInt(scanner.nextLine());
+                        } catch (NumberFormatException e) {
+                            System.out.println("Opção inválida. Por favor, insira um número.");
+                            continue;
+                        }
+
+                        switch (op) {
+                            case 0:
+                                System.out.println("Saindo...");
+                                break;
+                            case 1:
+                                adicionarRegra(scanner, controller);
+                                break;
+                            case 2:
+                                listarRegra(controller);
+                                break;
+                            case 3:
+                                atualizarRegra(scanner, controller);
+                                break;
+                            case 4:
+                                deletarRegra(scanner, controller);
+                                break;
+                            default:
+                                System.out.println("Opção Inválida!");
+                                break;
+                        }
+                    }
                     break;
                 case 0:
                     System.out.println("Saindo do sistema...");
