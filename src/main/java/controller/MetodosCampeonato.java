@@ -4,6 +4,7 @@ import Model.BancodeDados;
 import Model.Modalidade;
 import Model.Pessoa;
 import Model.Premiacao;
+import Model.Regras_Modalidade;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -174,7 +175,6 @@ public class MetodosCampeonato {
     }
     
     //Métodos Premiação
-    
     public void inserirPremiacao(Premiacao premiacao){
         String sql = "INSERT INTO Premiação (Tipo, Colocação, Valor, Competição) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
@@ -194,8 +194,8 @@ public class MetodosCampeonato {
         String sql = "SELECT * FROM Premiação";
         List<Premiacao> premiacoes = new ArrayList<>();
         try (Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)) {
-
+        ResultSet rs = stmt.executeQuery(sql)) {
+            
             while (rs.next()) {
                 Premiacao pre = new Premiacao(
                     rs.getInt("Tipo"),
@@ -207,46 +207,121 @@ public class MetodosCampeonato {
                     premiacoes.add(pre);
                 }
             } catch (SQLException e) {
-            System.out.println("Erro ao listar premiações: " + e.getMessage());
+                System.out.println("Erro ao listar premiações: " + e.getMessage());
+            }
+            
+            return premiacoes;
         }
         
-        return premiacoes;
+        public void deletarPremiacao(int id){
+            String sql = "DELETE FROM Premiação WHERE ID_Premiação = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+                pstmt.setInt(1, id);
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0){
+                    System.out.println("Premiação deletada com sucesso");
+                } else {
+                    System.out.println("Nenhuma premiação encontrada com o ID fornecido");
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao deletar premiação: " + e.getMessage());
+            }
+        }
+        
+        public void atualizarPremiacao(Premiacao premiacao){
+            String sql = "UPDATE Premiação SET Tipo = ?, Colocação = ?, Valor = ?, Competição = ? WHERE Competição = ?";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+                pstmt.setInt(1, premiacao.getTipo());
+                pstmt.setInt(2, premiacao.getColocação());
+                pstmt.setFloat(3, premiacao.getValor());
+                pstmt.setInt(4, premiacao.getCompetição());
+                pstmt.setInt(5, premiacao.getID_Premiacao());
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    System.out.println("Premiação atualizada com sucesso");
+                }else {
+                    System.out.println("Nenhuma premiação encontrada com ID fornecido");
+                }
+                
+            } catch (SQLException e) {
+            System.out.println("Erro ao atualizar premiação " + e.getMessage());
+        }
     }
     
-    public void deletarPremiacao(int id){
-        String sql = "DELETE FROM Premiação WHERE ID_Premiação = ?";
+    //Métodos Regras_Basicas
+
+    public void inserirRegra(Regras_Modalidade regras){
+        String sql = "INSERT INTO regras_modalidade (Codigo_Regra, Inciso, Regra, Modalidade) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, regras.getCodigo_Regra());
+            pstmt.setString(2, regras.getInciso());
+            pstmt.setString(3, regras.getInciso()); 
+            pstmt.setInt(4, regras.getModalidade()); 
+            pstmt.executeUpdate();
+            System.out.println("Regras inserida com sucesso");
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao inserir regras: " + e.getMessage());
+        }
+    }
+    
+    public List<Regras_Modalidade> listarRegra(){
+        String sql = "SELECT * FROM regras_modalidade";
+        List<Regras_Modalidade> regras = new ArrayList<>();
+        try (Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Regras_Modalidade r = new Regras_Modalidade(
+                    rs.getString("Inciso"),
+                    rs.getString("Regra"),
+                    rs.getInt("Modalidade")
+                    );
+                    r.setCodigo_Regra(rs.getInt("Codigo_Regra"));
+                    regras.add(r);
+                }
+            } catch (SQLException e) {
+            System.out.println("Erro ao listar regras: " + e.getMessage());
+        }
+        
+        return regras;
+    }
+    
+    public void deletarRegras(int id){
+        String sql = "DELETE FROM regras_modalidade WHERE Codigo_Regra = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, id);
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0){
-                System.out.println("Premiação deletada com sucesso");
+                System.out.println("Regra deletada com sucesso");
             } else {
-                System.out.println("Nenhuma premiação encontrada com o ID fornecido");
+                System.out.println("Nenhuma regra encontrada com o ID fornecido");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao deletar premiação: " + e.getMessage());
+            System.out.println("Erro ao deletar regra: " + e.getMessage());
         }
     }
     
-    public void atualizarPremiacao(Premiacao premiacao){
-        String sql = "UPDATE Premiação SET Tipo = ?, Colocação = ?, Valor = ?, Competição = ? WHERE Competição = ?";
+    public void atualizarRegra(Regras_Modalidade regras){
+        String sql = "UPDATE regras_modalidade SET Inciso = ?, Regra = ?, Modalidade = ? WHERE Codigo_Regra = ?";
          try (PreparedStatement pstmt = connection.prepareStatement(sql)){
-            pstmt.setInt(1, premiacao.getTipo());
-            pstmt.setInt(2, premiacao.getColocação());
-            pstmt.setFloat(3, premiacao.getValor());
-            pstmt.setInt(4, premiacao.getCompetição());
-            pstmt.setInt(5, premiacao.getID_Premiacao());
-            int affectedRows = pstmt.executeUpdate();
+             pstmt.setString(1, regras.getInciso());
+             pstmt.setString(2, regras.getRegra());
+             pstmt.setInt(3, regras.getModalidade());
+             pstmt.setInt(4, regras.getCodigo_Regra());
+             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
-                System.out.println("Premiação atualizada com sucesso");
+                System.out.println("Regra atualizada com sucesso");
             }else {
-                System.out.println("Nenhuma premiação encontrada com ID fornecido");
+                System.out.println("Nenhuma regra encontrada com ID fornecido");
             }
             
         } catch (SQLException e) {
-            System.out.println("Erro ao atualizar premiação " + e.getMessage());
+            System.out.println("Erro ao atualizar regra " + e.getMessage());
         }
     }
-}
 
-// OBS: Implementar aqui os métodos CRUD para Atleta, Arbitro, Equipe, Competição, etc.
+
+
+    // OBS: Implementar aqui os métodos CRUD para Atleta, Arbitro, Equipe, Competição, etc.
+}
