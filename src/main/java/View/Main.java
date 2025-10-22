@@ -4,6 +4,7 @@ import controller.MetodosCampeonato;
 import Model.Pessoa;
 import Model.Modalidade;
 import Model.Premiacao;
+import Model.Regras_Modalidade;
 
 import java.sql.Date;
 import java.util.List;
@@ -75,6 +76,18 @@ public class Main {
                     break;
                 case 12:
                     deletarPremiacao(scanner, controller);
+                    break;
+                case 13:
+                    adicionarRegra(scanner, controller);
+                    break;
+                case 14:
+                    listarRegra(controller);
+                    break;
+                case 15:
+                    atualizarRegra(scanner, controller);
+                    break;
+                case 16:
+                    deletarRegra(scanner, controller);
                     break;
                 case 0:
                     System.out.println("Saindo do sistema...");
@@ -174,7 +187,7 @@ public class Main {
         if (modalidades.isEmpty()) {
             System.out.println("Nenhuma modalidade cadastrada.");
         } else {
-            System.out.println("\n--- Lista de Pessoas ---");
+            System.out.println("\n--- Lista de Modalidades ---");
             for (Modalidade m : modalidades) {
                 System.out.println(m);
             }
@@ -234,7 +247,7 @@ public class Main {
         if (premiacoes.isEmpty()) {
             System.out.println("Nenhuma premiação cadastrada.");
         } else {
-            System.out.println("\n--- Lista de Pessoas ---");
+            System.out.println("\n--- Lista de Premiações ---");
             for (Premiacao p : premiacoes) {
                 System.out.println(p);
             }
@@ -268,6 +281,65 @@ public class Main {
             System.out.print("ID da premiação a ser deletada: ");
             int id = Integer.parseInt(scanner.nextLine());
             controller.deletarPremiacao(id);
+        } catch (Exception e) {
+            System.err.println("ID inválido: " + e.getMessage());
+        }
+    }
+
+
+    private static void adicionarRegra(Scanner scanner, MetodosCampeonato controller){
+        try {
+                System.out.print("Inciso: ");
+                String inciso = scanner.nextLine();
+                System.out.print("Regra: ");
+                String regra = scanner.nextLine();
+                System.out.print("Modalidade: ");
+                int modalidade = Integer.parseInt(scanner.nextLine());
+
+                Regras_Modalidade novaRegra = new Regras_Modalidade(inciso, regra, modalidade);
+                controller.inserirRegra(novaRegra);
+            } catch (Exception e) {
+                System.err.println("Erro nos dados de entrada: " + e.getMessage());
+            }
+    }
+
+    private static void listarRegra(MetodosCampeonato controller){
+        List<Regras_Modalidade> regras = controller.listarRegra();
+        if (regras.isEmpty()) {
+            System.out.println("Nenhuma regra cadastrada.");
+        } else {
+            System.out.println("\n--- Lista de Regras ---");
+            for (Regras_Modalidade r : regras) {
+                System.out.println(r);
+            }
+        }
+    }
+
+    private static void atualizarRegra(Scanner scanner, MetodosCampeonato controller){
+        try {
+            System.out.print("ID da regra a ser atualizada: ");
+            int id = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Novo Inciso: ");
+            String inciso = scanner.nextLine();
+            System.out.print("Nova Regra: ");
+            String regra = scanner.nextLine();
+            System.out.print("Nova Modalidade: ");
+            int modalidade = Integer.parseInt(scanner.nextLine());
+
+            Regras_Modalidade RegraAtualizada = new Regras_Modalidade(inciso, regra, modalidade);
+            RegraAtualizada.setCodigo_Regra(id);
+            controller.atualizarRegra(RegraAtualizada);
+        } catch (Exception e) {
+            System.err.println("Erro nos dados de entrada: " + e.getMessage());
+        }
+    }
+
+    private static void deletarRegra(Scanner scanner, MetodosCampeonato controller){
+        try {
+            System.out.print("ID da regra a ser deletada: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            controller.deletarRegras(id);
         } catch (Exception e) {
             System.err.println("ID inválido: " + e.getMessage());
         }
