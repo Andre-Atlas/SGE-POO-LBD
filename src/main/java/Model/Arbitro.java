@@ -5,7 +5,7 @@ public class Arbitro {
     private int partidasArbitradas;
     private int pessoa; // FK para Pessoa
 
-    public Arbitro() {}
+    public Arbitro() {} //Padrão
 
     public Arbitro(int partidasArbitradas, int pessoa) {
         this.partidasArbitradas = partidasArbitradas;
@@ -41,5 +41,5 @@ public class Arbitro {
         return "Arbitro [ID=" + idArbitro +
                 ", Partidas=" + partidasArbitradas +
                 ", Pessoa=" + pessoa + "]";
-    }
+    } //Como deve imprimir quando chamado
 }
