@@ -3,11 +3,11 @@ package Model;
 public class Arbitro {
     private int idArbitro;
     private int partidasArbitradas;
-    private int pessoa; // FK para Pessoa
+    private int pessoa; // Chave primaria
 
     public Arbitro() {} //Padrão
 
-    public Arbitro(int partidasArbitradas, int pessoa) {
+    public Arbitro(int partidasArbitradas, int pessoa) { //Pois nenhum pode ser nulo
         this.partidasArbitradas = partidasArbitradas;
         this.pessoa = pessoa;
     }
