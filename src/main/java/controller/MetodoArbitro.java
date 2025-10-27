@@ -1,80 +1,80 @@
 package controller;
 
-import java.sql.*;
-import java.util.*;
-import Model.Arbitro;
-import Model.BancodeDados;
+import java.sql.*; //Importação para usar a comandos SQL
+import java.util.*; //Importação para usar a Array
+import Model.Arbitro; //Importação para usar meu model
+import Model.BancodeDados; //Importação para usar a conexão
 
 public class MetodoArbitro {
 
-    // CREATE
-    public void inserir(Arbitro arbitro) throws SQLException {
-        String sql = "INSERT INTO Arbitro (Partidas_Arbitradas, Pessoa) VALUES (?, ?)";
+    // CREATE - INSERT INTO
+    public void inserir(Arbitro arbitro) throws SQLException { //Prepara para usar o SQL
+        String sql = "INSERT INTO Arbitro (Partidas_Arbitradas, Pessoa) VALUES (?, ?)"; //Comando SQL (? - onde vai ser substituido)
 
-        try (Connection conn = BancodeDados.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = BancodeDados.conectar(); //Abre a conexão com o BD
+             PreparedStatement stmt = conn.prepareStatement(sql)) { //Prepara o camando SQL (o comando prepareStatement exige uma valor em ?)
 
-            stmt.setInt(1, arbitro.getPartidasArbitradas());
+            stmt.setInt(1, arbitro.getPartidasArbitradas()); //Define os valores
             stmt.setInt(2, arbitro.getPessoa());
 
-            stmt.executeUpdate();
-            System.out.println("✅ Árbitro inserido com sucesso!");
+            stmt.executeUpdate(); //Executa o SQL
+            System.out.println("Árbitro inserido com sucesso!!!"); //Retorno para o usuario
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao inserir árbitro: " + e.getMessage());
-            throw e;
+            System.err.println("Não foi possivel inserir o árbitro" + e.getMessage());
+            throw e; //Repasse de erro (para fazer o sistema parar no erro)
         }
     }
 
     // READ - listar todos
     public List<Arbitro> listarTodos() throws SQLException {
-        List<Arbitro> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Arbitro";
+        List<Arbitro> lista = new ArrayList<>(); //Cria uma lista para listar os dados
+        String sql = "SELECT * FROM Arbitro"; //Cria o comando SQL
 
-        try (Connection conn = BancodeDados.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = BancodeDados.conectar(); //Abre a conexão com o BD
+             PreparedStatement stmt = conn.prepareStatement(sql); //Prepara o comando
+             ResultSet rs = stmt.executeQuery()) { //Aplica o SQL
 
-            while (rs.next()) {
+            while (rs.next()) { //Faz um SELECT e percorre o resultado
                 Arbitro a = new Arbitro();
-                a.setIdArbitro(rs.getInt("ID_Arbitro"));
+                a.setIdArbitro(rs.getInt("ID_Arbitro")); // Lê o registro e mostra
                 a.setPartidasArbitradas(rs.getInt("Partidas_Arbitradas"));
                 a.setPessoa(rs.getInt("Pessoa"));
-                lista.add(a);
+                lista.add(a); //Coloca cada Árbitro na lista
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao listar árbitros: " + e.getMessage());
+            System.err.println("Erro ao listar: " + e.getMessage()); //Retorno de erro
             throw e;
         }
 
-        return lista;
+        return lista; //Retorno para o usuario
     }
 
     // READ - buscar por ID
-    public Arbitro buscarPorId(int id) throws SQLException {
+    public Arbitro buscarPorId(int id) throws SQLException { //Mesma coisa do anterior mas com filtro
         String sql = "SELECT * FROM Arbitro WHERE ID_Arbitro = ?";
-        Arbitro a = null;
+        Arbitro arbitro = null; //Onde será armazenado
 
         try (Connection conn = BancodeDados.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, id); //Parametro de contagem para achar o ID
 
-            try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) { //Executa o SQL
                 if (rs.next()) {
-                    a = new Arbitro();
-                    a.setIdArbitro(rs.getInt("ID_Arbitro"));
-                    a.setPartidasArbitradas(rs.getInt("Partidas_Arbitradas"));
-                    a.setPessoa(rs.getInt("Pessoa"));
+                    arbitro = new Arbitro(); //Cria objeto para mostragem (evita a sobreescrita)
+                    arbitro.setIdArbitro(rs.getInt("ID_Arbitro"));
+                    arbitro.setPartidasArbitradas(rs.getInt("Partidas_Arbitradas"));
+                    arbitro.setPessoa(rs.getInt("Pessoa"));
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao buscar árbitro por ID: " + e.getMessage());
+            System.err.println("Erro ao listar IDs: " + e.getMessage());
             throw e;
         }
 
-        return a;
+        return arbitro;
     }
 
     // UPDATE
@@ -88,15 +88,15 @@ public class MetodoArbitro {
             stmt.setInt(2, arbitro.getPessoa());
             stmt.setInt(3, arbitro.getIdArbitro());
 
-            int linhasAfetadas = stmt.executeUpdate();
+            int linhasAfetadas = stmt.executeUpdate(); //Executa o SQL e retorna as linhas
             if (linhasAfetadas > 0) {
-                System.out.println("✅ Árbitro atualizado com sucesso!");
+                System.out.println("Árbitro atualizado com sucesso!!!");
             } else {
-                System.out.println("⚠️ Nenhum árbitro encontrado com o ID informado.");
+                System.out.println("Nenhum ID encontrado");
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao atualizar árbitro: " + e.getMessage());
+            System.err.println("Não foi possivel atualizar: " + e.getMessage());
             throw e;
         }
     }
@@ -112,13 +112,13 @@ public class MetodoArbitro {
             int linhasAfetadas = stmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
-                System.out.println("✅ Árbitro deletado com sucesso!");
+                System.out.println("Árbitro deletado com sucesso!!!");
             } else {
-                System.out.println("⚠️ Nenhum árbitro encontrado com o ID informado.");
+                System.out.println("Nenhum ID encontrado.");
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao deletar árbitro: " + e.getMessage());
+            System.err.println("Não foi possivel deletar: " + e.getMessage());
             throw e;
         }
     }
