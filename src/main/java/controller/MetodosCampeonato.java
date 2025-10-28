@@ -1,9 +1,7 @@
 package controller;
 
-// 1. Importar os Modelos
 import Model.*;
 
-// 2. Importar TODOS os DAOs que você acabou de criar
 import dao.ArbitroDAO;
 import dao.AtletaDAO;
 import dao.CompeticaoDAO;
@@ -14,7 +12,6 @@ import dao.PessoaDAO;
 import dao.PremiacaoDAO;
 import dao.Regras_ModalidadeDAO;
 
-// 3. Importar utilitários e a exceção SQL
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,10 +19,7 @@ import java.util.List;
 
 public class MetodosCampeonato {
 
-    // 4. REMOVER a conexão global.
-    // private Connection connection;
 
-    // 5. DECLARAR uma variável para cada DAO
     private PessoaDAO pessoaDAO;
     private ModalidadeDAO modalidadeDAO;
     private PremiacaoDAO premiacaoDAO;
@@ -38,10 +32,7 @@ public class MetodosCampeonato {
 
 
     public MetodosCampeonato() {
-        // 6. REMOVER a lógica de conexão do construtor
-        // this.connection = BancodeDados.conectar(); ...
-
-        // 7. INSTANCIAR cada DAO no construtor
+      
         this.pessoaDAO = new PessoaDAO();
         this.modalidadeDAO = new ModalidadeDAO();
         this.premiacaoDAO = new PremiacaoDAO();
@@ -53,15 +44,15 @@ public class MetodosCampeonato {
         this.partidaDAO = new PartidaDAO();
     }
 
-    // --- Métodos Pessoa (Refatorados) ---
+    
 
     public void inserirPessoa(Pessoa pessoa) {
         try {
-            // 8. DELEGAR a lógica para o DAO
+            
             pessoaDAO.inserir(pessoa);
             System.out.println("Pessoa '" + pessoa.getNome() + "' inserida com sucesso! ID=" + pessoa.getIdParticipante());
         } catch (SQLException e) {
-            // 9. TRATAR o erro vindo do DAO
+            
             System.err.println("Erro ao inserir pessoa: " + e.getMessage());
         }
     }
@@ -349,7 +340,6 @@ public class MetodosCampeonato {
         }
     }
 
-    // --- Métodos para os DAOs restantes (você pode adicionar no seu menu se quiser) ---
 
     // Atleta
     public void inserirAtleta(Atleta atleta) {
