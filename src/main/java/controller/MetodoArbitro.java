@@ -1,76 +1,97 @@
 package controller;
 
-import java.sql.*; //Importação para usar a comandos SQL
-import java.util.*; //Importação para usar a Array
-import Model.Arbitro; //Importação para usar meu model
-import Model.BancodeDados; //Importação para usar a conexão
+import java.sql.*;
+import java.util.*;
+import Model.Arbitro;
+import Model.BancodeDados;
 
 public class MetodoArbitro {
 
-    // CREATE - INSERT INTO
-    public void inserir(Arbitro arbitro) throws SQLException { //Prepara para usar o SQL
-        String sql = "INSERT INTO Arbitro (Partidas_Arbitradas, Pessoa) VALUES (?, ?)"; //Comando SQL (? - onde vai ser substituido)
+    // CREATE
+    public void inserir(Arbitro arbitro) throws SQLException { //cria metodo para o inserir
+        String sql = "INSERT INTO Arbitro (Partidas_Arbitradas, Pessoa, Competicoes_Participando) VALUES (?, ?, ?)"; //Codigo SQL("?" onde fica os valores)
 
-        try (Connection conn = BancodeDados.conectar(); //Abre a conexão com o BD
-             PreparedStatement stmt = conn.prepareStatement(sql)) { //Prepara o camando SQL (o comando prepareStatement exige uma valor em ?)
+        try (Connection conn = BancodeDados.conectar(); //
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, arbitro.getPartidasArbitradas()); //Define os valores
+            stmt.setInt(1, arbitro.getPartidasArbitradas());
             stmt.setInt(2, arbitro.getPessoa());
 
-            stmt.executeUpdate(); //Executa o SQL
-            System.out.println("Árbitro inserido com sucesso!!!"); //Retorno para o usuario
+            if (arbitro.getCompeticoesParticipando() != null) { //Permite avaliar se tem ou não NULL
+                stmt.setInt(3, arbitro.getCompeticoesParticipando());
+            } else {
+                stmt.setNull(3, java.sql.Types.INTEGER); //Se tiver seta NULL
+            }
+
+            stmt.executeUpdate();
+            System.out.println("Árbitro inserido com sucesso!");
         } catch (SQLException e) {
-            System.err.println("Não foi possivel inserir o árbitro" + e.getMessage());
-            throw e; //Repasse de erro (para fazer o sistema parar no erro)
+            System.err.println("Erro ao inserir árbitro: " + e.getMessage());
+            throw e; //Para o codigo no erro
         }
     }
 
     // READ - listar todos
     public List<Arbitro> listarTodos() throws SQLException {
-        List<Arbitro> lista = new ArrayList<>(); //Cria uma lista para listar os dados
-        String sql = "SELECT * FROM Arbitro"; //Cria o comando SQL
+        List<Arbitro> lista = new ArrayList<>(); //Cria lista temporaria para listar os itens
+        String sql = "SELECT * FROM Arbitro";
 
-        try (Connection conn = BancodeDados.conectar(); //Abre a conexão com o BD
-             PreparedStatement stmt = conn.prepareStatement(sql); //Prepara o comando
-             ResultSet rs = stmt.executeQuery()) { //Aplica o SQL
+        try (Connection conn = BancodeDados.conectar(); //Abre a conexão
+             PreparedStatement stmt = conn.prepareStatement(sql); //Prepara o comando SQL
+             ResultSet rs = stmt.executeQuery()) { //Executa o comando SQL
 
-            while (rs.next()) { //Faz um SELECT e percorre o resultado
+            while (rs.next()) {
                 Arbitro a = new Arbitro();
-                a.setIdArbitro(rs.getInt("ID_Arbitro")); // Lê o registro e mostra
+                a.setIdArbitro(rs.getInt("ID_Arbitro"));
                 a.setPartidasArbitradas(rs.getInt("Partidas_Arbitradas"));
                 a.setPessoa(rs.getInt("Pessoa"));
-                lista.add(a); //Coloca cada Árbitro na lista
+
+                int comp = rs.getInt("Competicoes_Participando");
+                if (rs.wasNull()) {
+                    a.setCompeticoesParticipando(null);
+                } else {
+                    a.setCompeticoesParticipando(comp);
+                }
+
+                lista.add(a);
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar: " + e.getMessage()); //Retorno de erro
+            System.err.println("Erro ao listar árbitros: " + e.getMessage());
             throw e;
         }
 
-        return lista; //Retorno para o usuario
+        return lista;
     }
 
     // READ - buscar por ID
-    public Arbitro buscarPorId(int id) throws SQLException { //Mesma coisa do anterior mas com filtro
+    public Arbitro buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM Arbitro WHERE ID_Arbitro = ?";
-        Arbitro arbitro = null; //Onde será armazenado
+        Arbitro arbitro = null;
 
         try (Connection conn = BancodeDados.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id); //Parametro de contagem para achar o ID
+            stmt.setInt(1, id); //Cria parametro para a busca por id
 
-            try (ResultSet rs = stmt.executeQuery()) { //Executa o SQL
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    arbitro = new Arbitro(); //Cria objeto para mostragem (evita a sobreescrita)
+                    arbitro = new Arbitro();
                     arbitro.setIdArbitro(rs.getInt("ID_Arbitro"));
                     arbitro.setPartidasArbitradas(rs.getInt("Partidas_Arbitradas"));
                     arbitro.setPessoa(rs.getInt("Pessoa"));
+
+                    int comp = rs.getInt("Competicoes_Participando");
+                    if (rs.wasNull()) {
+                        arbitro.setCompeticoesParticipando(null);
+                    } else {
+                        arbitro.setCompeticoesParticipando(comp);
+                    }
                 }
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao listar IDs: " + e.getMessage());
+            System.err.println("Erro ao buscar árbitro por ID: " + e.getMessage());
             throw e;
         }
 
@@ -79,24 +100,31 @@ public class MetodoArbitro {
 
     // UPDATE
     public void atualizar(Arbitro arbitro) throws SQLException {
-        String sql = "UPDATE Arbitro SET Partidas_Arbitradas = ?, Pessoa = ? WHERE ID_Arbitro = ?";
+        String sql = "UPDATE Arbitro SET Partidas_Arbitradas = ?, Pessoa = ?, Competicoes_Participando = ? WHERE ID_Arbitro = ?";
 
         try (Connection conn = BancodeDados.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, arbitro.getPartidasArbitradas());
             stmt.setInt(2, arbitro.getPessoa());
-            stmt.setInt(3, arbitro.getIdArbitro());
 
-            int linhasAfetadas = stmt.executeUpdate(); //Executa o SQL e retorna as linhas
-            if (linhasAfetadas > 0) {
-                System.out.println("Árbitro atualizado com sucesso!!!");
+            if (arbitro.getCompeticoesParticipando() != null) {
+                stmt.setInt(3, arbitro.getCompeticoesParticipando());
             } else {
-                System.out.println("Nenhum ID encontrado");
+                stmt.setNull(3, java.sql.Types.INTEGER);
+            }
+
+            stmt.setInt(4, arbitro.getIdArbitro());
+
+            int linhasAfetadas = stmt.executeUpdate();
+            if (linhasAfetadas > 0) {
+                System.out.println("Árbitro atualizado com sucesso!");
+            } else {
+                System.out.println("Nenhum árbitro encontrado com esse ID.");
             }
 
         } catch (SQLException e) {
-            System.err.println("Não foi possivel atualizar: " + e.getMessage());
+            System.err.println("Erro ao atualizar árbitro: " + e.getMessage());
             throw e;
         }
     }
@@ -112,14 +140,16 @@ public class MetodoArbitro {
             int linhasAfetadas = stmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
-                System.out.println("Árbitro deletado com sucesso!!!");
+                System.out.println("Árbitro deletado com sucesso!");
             } else {
-                System.out.println("Nenhum ID encontrado.");
+                System.out.println("Nenhum árbitro encontrado com esse ID.");
             }
 
         } catch (SQLException e) {
-            System.err.println("Não foi possivel deletar: " + e.getMessage());
+            System.err.println("Erro ao deletar árbitro: " + e.getMessage());
             throw e;
         }
     }
 }
+
+//try-with-resources = garante os fechamentos dos comandos de banco
