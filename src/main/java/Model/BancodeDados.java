@@ -8,66 +8,61 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class BancodeDados {
-    private static Connection connection = null;
 
-    // Méttodo para carregar as propriedades do arquivo de configuração
+    // 1. REMOVIDO o campo estático da conexão
+    // private static Connection connection = null;
+
+    // Método para carregar as propriedades (permanece igual)
     private static Properties getProperties() throws IOException {
         Properties props = new Properties();
-        // O nome do arquivo como está na pasta 'resources'
         String fileName = "config.properties";
 
-        // Tenta carregar o arquivo a partir do 'classpath' (que inclui a pasta 'resources')
         try (InputStream inputStream = BancodeDados.class.getClassLoader().getResourceAsStream(fileName)) {
-
             if (inputStream == null) {
                 throw new IOException("Arquivo de propriedades '" + fileName + "' não encontrado no classpath.");
             }
-
-            // Carrega as propriedades do arquivo
             props.load(inputStream);
         }
         return props;
     }
 
-    public static Connection conectar() {
-        if (connection == null) {
-            try {
-                Properties props = getProperties();
-                String url = props.getProperty("db.url");
-                String user = props.getProperty("db.user");
-                String password = props.getProperty("db.password");
+    /**
+     * MÉTODO CONECTAR (MODIFICADO)
+     * Agora lança SQLException e sempre cria uma NOVA conexão.
+     */
+    public static Connection conectar() throws SQLException {
+        try {
+            Properties props = getProperties();
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String password = props.getProperty("db.password");
 
-                // Validação para garantir que as propriedades foram carregadas
-                if (url == null || user == null || password == null) {
-                    throw new SQLException("Propriedades do banco de dados (url, user, password) não encontradas no arquivo config.properties.");
-                }
-
-                connection = DriverManager.getConnection(url, user, password);
-                System.out.println("Conexão com o banco de dados estabelecida com sucesso!");
-
-            } catch (SQLException e) {
-                System.err.println("Erro ao conectar com o banco de dados: " + e.getMessage());
-                e.printStackTrace();
-                return null;
-            } catch (IOException e) {
-                System.err.println("Erro ao ler o arquivo de configuração: " + e.getMessage());
-                e.printStackTrace();
-                return null;
+            // Validação
+            if (url == null || user == null || password == null) {
+                throw new SQLException("Propriedades do banco de dados (url, user, password) não encontradas no arquivo config.properties.");
             }
+
+            // 2. MUITO IMPORTANTE:
+            // Removemos o 'if (connection == null)'
+            // Agora, ele SEMPRE cria e retorna uma NOVA conexão.
+            // Ele não armazena mais a conexão em um campo estático.
+            return DriverManager.getConnection(url, user, password);
+
+        } catch (IOException e) {
+            // Lança uma SQLException se não conseguir ler o config
+            throw new SQLException("Erro ao ler o arquivo de configuração: " + e.getMessage(), e);
         }
-        return connection;
+        // Os try/catch de SQLException foram removidos para
+        // que a exceção seja propagada para o DAO (que a propaga para o Controller).
     }
 
+    /**
+     * MÉTODO DESCONECTAR (MODIFICADO)
+     */
     public static void desconectar() {
-        if (connection != null) {
-            try {
-                connection.close();
-                connection = null;
-                System.out.println("Conexão com o banco de dados fechada.");
-            } catch (SQLException e) {
-                System.err.println("Erro ao fechar a conexão com o banco de dados: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        // Esta classe não gerencia mais uma conexão estática.
+        // O try-with-resources em cada DAO agora cuida do fechamento.
+        // Este método não precisa fazer nada, mas o Main.java o chama.
+        // System.out.println("Desconexão tratada automaticamente pelos DAOs.");
     }
 }
